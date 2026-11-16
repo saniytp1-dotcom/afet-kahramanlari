@@ -1,0 +1,8 @@
+{
+  "name": "afet-kahramanlari",
+  "version": "1.0.0",
+  "description": "Afete Hazır Kahramanlar - Takım Düellosu (ortaokul afet hazırlık oyunu)",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}

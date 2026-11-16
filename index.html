@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Afete Hazır Kahramanlar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#DA0815; --red-d:#a8000c; --cream:#fff7ef; --ink:#2a1d1f; --muted:#7a6a6c;
+  --ok:#1f9d55; --bad:#d64545; --gold:#ffbf2e; --sky:#e9f4ff; --card:#ffffff;
+  --shadow:0 6px 0 rgba(0,0,0,.12), 0 14px 30px rgba(90,0,10,.12);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{font-family:"Baloo 2","Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--cream);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(circle at 12% 18%,#ffe1e1 0 120px,transparent 121px),
+  radial-gradient(circle at 88% 8%,#ffecd2 0 160px,transparent 161px),
+  radial-gradient(circle at 92% 86%,#ffe1e1 0 140px,transparent 141px),
+  radial-gradient(circle at 6% 92%,#e8f3ff 0 130px,transparent 131px),var(--cream)}
+button{font-family:inherit;cursor:pointer}
+.wrap{max-width:1100px;margin:0 auto;padding:16px 16px 40px}
+header.top{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:10px}
+.logo{height:46px;background:#fff;border-radius:14px;padding:6px 10px;box-shadow:0 3px 0 rgba(0,0,0,.08)}
+.chipbar{display:flex;gap:8px;align-items:center}
+.chip{background:#fff;border-radius:999px;padding:6px 14px;font-weight:700;box-shadow:0 3px 0 rgba(0,0,0,.08);display:flex;gap:6px;align-items:center}
+.iconbtn{border:0;background:#fff;border-radius:50%;width:44px;height:44px;font-size:22px;box-shadow:0 3px 0 rgba(0,0,0,.1)}
+.screen{display:none;animation:in .35s ease}
+.screen.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+h1{font-size:clamp(34px,6vw,58px);line-height:1;margin:6px 0 4px;color:var(--red)}
+h2{font-size:clamp(26px,4vw,38px);margin:4px 0;color:var(--red)}
+.lead{font-size:20px;color:var(--muted);margin:0 0 14px}
+.btn{border:0;border-radius:18px;padding:12px 22px;font-size:20px;font-weight:800;background:var(--red);color:#fff;box-shadow:0 5px 0 var(--red-d);transition:transform .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--red-d)}
+.btn.ghost{background:#fff;color:var(--red);box-shadow:0 5px 0 #e9cfd1}
+.btn.gold{background:var(--gold);color:#3a2500;box-shadow:0 5px 0 #c98f00}
+.btn:disabled{opacity:.5}
+/* hero */
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:center;background:#fff;border-radius:28px;padding:20px 24px;box-shadow:var(--shadow);margin-bottom:18px;position:relative;overflow:hidden}
+.hero .mascot{justify-self:center}
+.speech{background:var(--sky);border-radius:20px;padding:10px 16px;font-size:19px;position:relative;margin-top:8px}
+.namebox{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.namebox input{flex:1;min-width:180px;font:inherit;font-size:20px;border:3px solid #f1d6d8;border-radius:16px;padding:8px 14px;outline:none}
+.namebox input:focus{border-color:var(--red)}
+/* game cards */
+.games{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.gcard{position:relative;border:0;text-align:left;background:#fff;border-radius:26px;padding:18px 18px 16px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:center;transition:transform .15s}
+.gcard:hover{transform:translateY(-4px) rotate(-.4deg)}
+.gcard .gicon{font-size:56px;width:86px;height:86px;border-radius:22px;display:grid;place-items:center;flex:none}
+.gcard h3{margin:0;font-size:25px;line-height:1.05}
+.gcard p{margin:4px 0 0;color:var(--muted);font-size:17px;line-height:1.2}
+.gcard .badge{position:absolute;top:12px;right:14px;font-size:22px}
+.stars{color:var(--gold);letter-spacing:2px;font-size:20px}
+.shelf{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin:18px 0 6px}
+.medal{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;font-size:34px;background:#eee;filter:grayscale(1);opacity:.45;position:relative;transition:all .4s}
+.medal.got{filter:none;opacity:1;background:radial-gradient(circle at 35% 30%,#fff3c4,#ffbf2e);box-shadow:0 4px 0 #c98f00;animation:pop .6s}
+@keyframes pop{0%{transform:scale(.4)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.certcta{text-align:center;margin-top:8px}
+/* game shell */
+.ghead{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.ghead .title{flex:1;min-width:200px}
+.hud{display:flex;gap:8px;flex-wrap:wrap}
+.panel{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:14px}
+.timer{font-variant-numeric:tabular-nums}
+.timer.low{color:var(--bad);animation:blink .6s infinite}
+@keyframes blink{50%{opacity:.4}}
+/* BAG game */
+.bagwrap{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.shelfgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:10px}
+.item{user-select:none;touch-action:none;background:#fff7f2;border:3px solid #f3dfd5;border-radius:18px;padding:8px 4px 6px;text-align:center;font-size:15px;line-height:1.1;font-weight:700;cursor:grab;transition:transform .12s, opacity .2s}
+.item .e{font-size:38px;display:block;line-height:1.15}
+.item:hover{transform:scale(1.05)}
+.item.ghost{opacity:.25}
+.item.dragging{position:fixed;z-index:50;pointer-events:none;transform:scale(1.15) rotate(-6deg);box-shadow:0 12px 24px rgba(0,0,0,.25)}
+.bag{position:relative;min-height:380px;border-radius:30px;background:linear-gradient(#ff6b6b,#DA0815);padding:58px 14px 14px;color:#fff;box-shadow:inset 0 -10px 0 rgba(0,0,0,.15),var(--shadow)}
+.bag::before{content:"";position:absolute;left:50%;top:-26px;width:120px;height:56px;transform:translateX(-50%);border:12px solid #a8000c;border-bottom:0;border-radius:60px 60px 0 0}
+.bag .lbl{position:absolute;top:12px;left:0;right:0;text-align:center;font-weight:800;font-size:22px}
+.bag.hot{outline:6px dashed var(--gold);outline-offset:4px}
+.baggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{aspect-ratio:1;border-radius:14px;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:30px;border:2px dashed rgba(255,255,255,.5);cursor:pointer}
+.slot.full{background:#fff;border-style:solid;border-color:#fff}
+.result-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-top:10px}
+.res{display:flex;gap:10px;align-items:flex-start;background:#fff;border-radius:16px;padding:8px 10px;border-left:8px solid #ccc;font-size:16px;line-height:1.2}
+.res .e{font-size:28px}
+.res.ok{border-color:var(--ok)} .res.bad{border-color:var(--bad)} .res.miss{border-color:var(--gold)}
+/* HAZARD game */
+.scene{position:relative;width:100%;border-radius:24px;overflow:hidden;box-shadow:var(--shadow);background:#fff}
+.scene svg{display:block;width:100%;height:auto}
+.hz{cursor:pointer}
+.hz:hover .glow{opacity:.35}
+.glow{fill:#fff36b;opacity:0;transition:opacity .2s}
+.ring{fill:none;stroke:none}
+.found .ring{stroke:var(--ok);stroke-width:8;fill:none;stroke-dasharray:6 4;animation:spin 3s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{stroke-dashoffset:-60}}
+.hintpulse .glow{opacity:.8;animation:blink .5s infinite}
+.miss-mark{position:absolute;pointer-events:none;font-size:34px;transform:translate(-50%,-50%);animation:fadeup .8s forwards}
+@keyframes fadeup{to{opacity:0;transform:translate(-50%,-120%)}}
+.tip{pointer-events:none;visibility:hidden;position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(140%);width:min(680px,94vw);background:#fff;border-radius:22px;box-shadow:0 18px 40px rgba(0,0,0,.25);padding:14px 18px;z-index:40;display:flex;gap:12px;align-items:flex-start;transition:transform .35s cubic-bezier(.2,1.4,.4,1);border-top:8px solid var(--ok)}
+.tip.on{transform:translateX(-50%) translateY(0);visibility:visible}
+.tip .e{font-size:42px}
+.tip b{font-size:21px;display:block}
+.tip p{margin:2px 0 0;font-size:18px;line-height:1.25}
+/* SCENARIO */
+.scen-pick{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.scen{border:0;border-radius:24px;padding:16px 10px;color:#fff;font-size:21px;font-weight:800;box-shadow:var(--shadow);min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.scen .e{font-size:54px}
+.story{display:grid;grid-template-columns:240px 1fr;gap:16px;align-items:stretch}
+.stage{border-radius:24px;display:grid;place-items:center;font-size:110px;min-height:240px;position:relative;overflow:hidden}
+.stage.shake{animation:quake .5s infinite}
+@keyframes quake{25%{transform:translate(-4px,2px) rotate(-1deg)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-3px) rotate(1deg)}}
+.stepdots{display:flex;gap:6px;margin-bottom:6px}
+.stepdots i{width:30px;height:8px;border-radius:9px;background:#f1d6d8}
+.stepdots i.on{background:var(--red)}
+.q{font-size:24px;line-height:1.2;margin:4px 0 12px;font-weight:700}
+.choices{display:grid;gap:10px}
+.choice{border:3px solid #f1d6d8;background:#fff;border-radius:18px;padding:12px 16px;font-size:20px;text-align:left;font-weight:700;transition:all .15s}
+.choice:hover{border-color:var(--red);transform:translateX(4px)}
+.choice.ok{background:#e4f7ec;border-color:var(--ok)}
+.choice.bad{background:#fde8e8;border-color:var(--bad);animation:nope .35s}
+@keyframes nope{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.explain{margin-top:10px;border-radius:18px;padding:12px 14px;font-size:19px;line-height:1.25;display:none}
+.explain.on{display:block;animation:in .3s}
+.explain.ok{background:#e4f7ec} .explain.bad{background:#fde8e8}
+.hearts{font-size:24px}
+/* MEMORY */
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:600px;margin:0 auto;perspective:900px}
+.mcard{aspect-ratio:1/1.05;border:0;background:transparent;padding:0;position:relative}
+.mcard .in{position:absolute;inset:0;transition:transform .45s;transform-style:preserve-3d}
+.mcard.flip .in,.mcard.done .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:20px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;text-align:center;box-shadow:0 5px 0 rgba(0,0,0,.12)}
+.face.back{background:repeating-linear-gradient(45deg,var(--red) 0 14px,#e8232f 14px 28px);color:#fff;font-size:44px}
+.face.front{transform:rotateY(180deg);background:#fff;font-weight:800;font-size:clamp(14px,2vw,19px);line-height:1.1}
+.face.front .e{font-size:clamp(30px,5vw,46px)}
+.face.front.a{background:#fff3e0} .face.front.b{background:#e9f4ff}
+.mcard.done .face.front{outline:5px solid var(--ok)}
+/* modal & cert */
+.modal{position:fixed;inset:0;background:rgba(40,0,6,.55);display:none;place-items:center;z-index:60;padding:16px}
+.modal.on{display:grid}
+.mbox{background:#fff;border-radius:30px;padding:24px;max-width:560px;width:100%;text-align:center;animation:pop .45s}
+.mbox .big{font-size:80px;line-height:1}
+.cert{background:#fff;border-radius:24px;padding:34px;border:14px double var(--red);text-align:center;position:relative;max-width:820px;margin:10px auto}
+.cert h1{font-size:54px}
+.cert .who{font-size:46px;font-weight:800;border-bottom:4px dotted #e5b9bc;display:inline-block;padding:0 20px;margin:8px 0}
+.cert .meds{font-size:46px;letter-spacing:10px}
+canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:70}
+.foot{text-align:center;color:var(--muted);font-size:15px;margin-top:22px}
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr}.hero .mascot{display:none}
+  .games{grid-template-columns:1fr}
+  .bagwrap{grid-template-columns:1fr}
+  .scen-pick{grid-template-columns:repeat(2,1fr)}
+  .story{grid-template-columns:1fr}.stage{min-height:150px;font-size:80px}
+  .mgrid{gap:8px}
+}
+@media print{body *{visibility:hidden}#certArea,#certArea *{visibility:visible}#certArea{position:absolute;left:0;top:0;width:100%}}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="wrap">
+  <header class="top">
+    <img class="logo" src="kizilay.png" alt="Türk Kızılay">
+    <div class="chipbar">
+      <div class="chip" id="medalChip">🏅 <span id="medalCount">0</span>/4</div>
+      <button class="iconbtn" id="soundBtn" title="Ses">🔊</button>
+      <button class="iconbtn" id="homeBtn" title="Ana sayfa">🏠</button>
+    </div>
+  </header>
+
+  <!-- HOME -->
+  <section class="screen on" id="s-home">
+    <div class="hero">
+      <div>
+        <h1>Afete Hazır Kahramanlar</h1>
+        <p class="lead">Deprem, sel ve yangına hazır mısın? 4 görevi tamamla, 4 rozeti topla, <b>Afet Kahramanı Sertifikanı</b> al!</p>
+        <div class="speech" id="mascotTalk">Merhaba! Ben <b>Hilal</b>. Afetlerde ne yapacağını bilen biri, hem kendini hem çevresini korur. Hadi başlayalım!</div>
+        <div class="namebox">
+          <input id="nameIn" maxlength="28" placeholder="Adını yaz (sertifika için)">
+          <button class="btn" id="nameSave">Kaydet</button>
+        </div>
+      </div>
+      <div class="mascot">
+        <svg width="230" height="250" viewBox="0 0 230 250" aria-hidden="true">
+          <ellipse cx="115" cy="238" rx="70" ry="10" fill="rgba(0,0,0,.12)"/>
+          <g id="mascotBody">
+            <rect x="48" y="70" width="134" height="150" rx="34" fill="#DA0815"/>
+            <rect x="60" y="92" width="110" height="70" rx="18" fill="#fff"/>
+            <circle cx="92" cy="122" r="10" fill="#2a1d1f"/><circle cx="138" cy="122" r="10" fill="#2a1d1f"/>
+            <circle cx="95" cy="118" r="3" fill="#fff"/><circle cx="141" cy="118" r="3" fill="#fff"/>
+            <path d="M98 142 Q115 158 132 142" stroke="#2a1d1f" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <circle cx="78" cy="140" r="7" fill="#ffb3b8"/><circle cx="152" cy="140" r="7" fill="#ffb3b8"/>
+            <path d="M115 176 a20 20 0 1 0 0.1 0 Z" fill="#fff"/>
+            <path d="M118 182 a14 14 0 1 1 -0.1 28 a11 11 0 1 0 0.1 -28 Z" fill="#DA0815"/>
+            <path d="M80 70 Q115 30 150 70" stroke="#a8000c" stroke-width="12" fill="none" stroke-linecap="round"/>
+            <rect x="34" y="120" width="22" height="60" rx="11" fill="#DA0815" transform="rotate(20 45 120)"/>
+            <g id="wave"><rect x="176" y="96" width="22" height="60" rx="11" fill="#DA0815" transform="rotate(-35 187 126)"/></g>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="games">
+      <button class="gcard" data-go="bag">
+        <div class="gicon" style="background:#ffe8e8">🎒</div>
+        <div><h3>Afet Çantası Yarışı</h3><p>60 saniyede doğru eşyaları çantaya at. Saç kurutma makinesi mi? Hiç sanmam!</p><div class="stars" data-stars="bag"></div></div>
+        <span class="badge" data-badge="bag"></span>
+      </button>
+      <button class="gcard" data-go="hazard">
+        <div class="gicon" style="background:#fff3d6">🔍</div>
+        <div><h3>Tehlike Dedektifi</h3><p>Bu odada depremde başına iş açacak 8 tehlike saklı. Hepsini bulabilir misin?</p><div class="stars" data-stars="hazard"></div></div>
+        <span class="badge" data-badge="hazard"></span>
+      </button>
+      <button class="gcard" data-go="story">
+        <div class="gicon" style="background:#e6f2ff">🧭</div>
+        <div><h3>Sen Olsan Ne Yapardın?</h3><p>Deprem, sel, yangın… Her adımda bir karar ver. 3 canın var!</p><div class="stars" data-stars="story"></div></div>
+        <span class="badge" data-badge="story"></span>
+      </button>
+      <button class="gcard" data-go="memory">
+        <div class="gicon" style="background:#e8f8ee">🃏</div>
+        <div><h3>Hafıza Kartları</h3><p>Afeti doğru davranışla eşleştir. En az hamlede bitirebilecek misin?</p><div class="stars" data-stars="memory"></div></div>
+        <span class="badge" data-badge="memory"></span>
+      </button>
+    </div>
+
+    <div class="shelf" id="shelf">
+      <div class="medal" data-medal="bag" title="Çanta Ustası">🎒</div>
+      <div class="medal" data-medal="hazard" title="Tehlike Dedektifi">🔍</div>
+      <div class="medal" data-medal="story" title="Doğru Karar">🧭</div>
+      <div class="medal" data-medal="memory" title="Hafıza Şampiyonu">🃏</div>
+    </div>
+    <div class="certcta"><button class="btn gold" id="certBtn" disabled>🏆 Sertifikamı Göster</button></div>
+    <p class="foot">Bilgiler AFAD ve Türk Kızılay'ın afete hazırlık önerilerine dayanır. Acil durumda <b>112</b>'yi ara.</p>
+  </section>
+
+  <!-- BAG -->
+  <section class="screen" id="s-bag">
+    <div class="ghead">
+      <div class="title"><h2>🎒 Afet Çantası Yarışı</h2><div class="lead" style="margin:0">Eşyaları sürükle ya da dokun: çantaya girsin. Sadece 12 yer var!</div></div>
+      <div class="hud"><div class="chip">⏱️ <span class="timer" id="bagTime">60</span></div><div class="chip">🎒 <span id="bagCount">0</span>/12</div></div>
+    </div>
+    <div class="bagwrap" id="bagPlay">
+      <div class="panel"><div class="shelfgrid" id="bagShelf"></div></div>
+      <div>
+        <div class="bag" id="bagDrop"><div class="lbl">AFET ÇANTAM</div><div class="baggrid" id="bagSlots"></div></div>
+        <div style="text-align:center;margin-top:14px"><button class="btn" id="bagDone">Çantayı Kapat ✔</button></div>
+      </div>
+    </div>
+    <div id="bagResult" style="display:none"></div>
+  </section>
+
+  <!-- HAZARD -->
+  <section class="screen" id="s-hazard">
+    <div class="ghead">
+      <div class="title"><h2>🔍 Tehlike Dedektifi</h2><div class="lead" style="margin:0">Depremde tehlike yaratacak şeylere dokun. 8 tane var!</div></div>
+      <div class="hud"><div class="chip">✅ <span id="hzFound">0</span>/8</div><div class="chip">⏱️ <span class="timer" id="hzTime">90</span></div><button class="btn ghost" id="hzHint" style="padding:6px 14px;font-size:18px">💡 İpucu (<span id="hzHints">2</span>)</button></div>
+    </div>
+    <div class="scene" id="hzScene">
+      <svg viewBox="0 0 1000 600" id="hzSvg" role="img" aria-label="Bir çocuk odası">
+        <!-- room -->
+        <rect width="1000" height="600" fill="#fde9d9"/>
+        <rect y="440" width="1000" height="160" fill="#c98f5e"/>
+        <g stroke="#b37a4c" stroke-width="4">
+          <line x1="0" y1="490" x2="1000" y2="490"/><line x1="0" y1="545" x2="1000" y2="545"/>
+        </g>
+        <rect y="430" width="1000" height="14" fill="#e7c9a9"/>
+        <!-- wallpaper dots -->
+        <g fill="#f7d4bd">
+          <circle cx="60" cy="60" r="6"/><circle cx="160" cy="120" r="6"/><circle cx="420" cy="70" r="6"/><circle cx="700" cy="60" r="6"/><circle cx="900" cy="140" r="6"/><circle cx="560" cy="200" r="6"/>
+        </g>
+        <!-- door (right) -->
+        <rect x="860" y="190" width="120" height="250" fill="#8b5a2b" stroke="#5e3a19" stroke-width="5"/>
+        <circle cx="880" cy="320" r="8" fill="#f5c542"/>
+        <!-- window with bed under it (hazard 1) -->
+        <g class="hz" data-hz="bedwin">
+          <rect class="glow" x="250" y="60" width="270" height="390" rx="20"/>
+          <rect x="300" y="80" width="170" height="160" fill="#bfe6ff" stroke="#fff" stroke-width="12"/>
+          <line x1="385" y1="80" x2="385" y2="240" stroke="#fff" stroke-width="8"/>
+          <line x1="300" y1="160" x2="470" y2="160" stroke="#fff" stroke-width="8"/>
+          <rect x="270" y="320" width="240" height="70" rx="12" fill="#5b8def"/>
+          <rect x="270" y="300" width="80" height="40" rx="14" fill="#fff"/>
+          <rect x="262" y="290" width="14" height="150" fill="#7a4a24"/><rect x="504" y="330" width="14" height="110" fill="#7a4a24"/>
+          <rect x="270" y="390" width="240" height="18" fill="#7a4a24"/>
+          <circle class="ring" cx="385" cy="250" r="150"/>
+        </g>
+        <!-- heavy frame over the bed (hazard 2) -->
+        <g class="hz" data-hz="frame">
+          <rect class="glow" x="525" y="90" width="120" height="120" rx="14"/>
+          <rect x="540" y="105" width="90" height="90" fill="#f2c94c" stroke="#8b5a2b" stroke-width="10"/>
+          <path d="M555 180 L580 140 L600 165 L615 150 L625 180 Z" fill="#6fcf97"/>
+          <circle cx="600" cy="130" r="9" fill="#ff8a65"/>
+          <circle class="ring" cx="585" cy="150" r="72"/>
+        </g>
+        <!-- unsecured bookcase (hazard 3) -->
+        <g class="hz" data-hz="shelf">
+          <rect class="glow" x="20" y="80" width="200" height="370" rx="14"/>
+          <g transform="rotate(-3 120 440)">
+            <rect x="40" y="110" width="160" height="330" fill="#a0673a" stroke="#6b411e" stroke-width="6"/>
+            <g fill="#6b411e"><rect x="40" y="190" width="160" height="8"/><rect x="40" y="270" width="160" height="8"/><rect x="40" y="350" width="160" height="8"/></g>
+            <g><rect x="52" y="140" width="16" height="50" fill="#e74c3c"/><rect x="70" y="146" width="14" height="44" fill="#3498db"/><rect x="86" y="138" width="18" height="52" fill="#f1c40f"/><rect x="110" y="150" width="40" height="40" fill="#9b59b6"/><rect x="58" y="220" width="70" height="50" fill="#16a085"/><rect x="140" y="226" width="40" height="44" fill="#e67e22"/><rect x="52" y="300" width="20" height="50" fill="#2c3e50"/><rect x="76" y="306" width="18" height="44" fill="#c0392b"/><rect x="120" y="296" width="60" height="54" fill="#bdc3c7"/></g>
+          </g>
+          <circle class="ring" cx="120" cy="270" r="140"/>
+        </g>
+        <!-- heavy box on top of wardrobe (hazard 4) -->
+        <g>
+          <rect x="660" y="200" width="170" height="240" fill="#d9a066" stroke="#8b5a2b" stroke-width="6"/>
+          <line x1="745" y1="200" x2="745" y2="440" stroke="#8b5a2b" stroke-width="5"/>
+          <circle cx="732" cy="320" r="6" fill="#5e3a19"/><circle cx="758" cy="320" r="6" fill="#5e3a19"/>
+        </g>
+        <g class="hz" data-hz="topbox">
+          <rect class="glow" x="660" y="80" width="170" height="125" rx="14"/>
+          <rect x="672" y="120" width="96" height="80" fill="#c69c6d" stroke="#7a5230" stroke-width="5"/>
+          <text x="720" y="168" font-size="20" text-anchor="middle" fill="#7a5230" font-weight="800">AĞIR</text>
+          <path d="M780 200 l10 -70 h30 l10 70 Z" fill="#7fc8f8" stroke="#3b7fb0" stroke-width="4"/>
+          <circle class="ring" cx="745" cy="150" r="80"/>
+        </g>
+        <!-- overloaded power strip (hazard 5) -->
+        <g class="hz" data-hz="plug">
+          <rect class="glow" x="530" y="440" width="150" height="80" rx="14"/>
+          <rect x="545" y="470" width="120" height="30" rx="8" fill="#eee" stroke="#999" stroke-width="3"/>
+          <g fill="#333"><rect x="555" y="460" width="16" height="24" rx="3"/><rect x="580" y="458" width="16" height="26" rx="3"/><rect x="605" y="460" width="16" height="24" rx="3"/><rect x="630" y="458" width="16" height="26" rx="3"/></g>
+          <g stroke="#333" stroke-width="4" fill="none"><path d="M563 460 q-10 -40 -40 -50"/><path d="M588 458 q0 -40 30 -60"/><path d="M613 460 q20 -30 60 -30"/><path d="M638 458 q40 -10 50 -60"/></g>
+          <text x="600" y="455" font-size="26" text-anchor="middle">⚡</text>
+          <circle class="ring" cx="605" cy="480" r="72"/>
+        </g>
+        <!-- boxes blocking the door (hazard 6) -->
+        <g class="hz" data-hz="exit">
+          <rect class="glow" x="835" y="330" width="160" height="150" rx="14"/>
+          <rect x="850" y="370" width="80" height="80" fill="#c69c6d" stroke="#7a5230" stroke-width="5"/>
+          <rect x="900" y="400" width="80" height="60" fill="#d6b07f" stroke="#7a5230" stroke-width="5"/>
+          <rect x="870" y="340" width="60" height="34" fill="#e74c3c" stroke="#a83226" stroke-width="4"/>
+          <circle class="ring" cx="915" cy="405" r="80"/>
+        </g>
+        <!-- heater next to the curtain (hazard 7) -->
+        <g>
+          <path d="M290 70 q-20 120 0 240 l-25 0 q-15 -120 0 -240 Z" fill="#f78fb3"/>
+        </g>
+        <g class="hz" data-hz="heater">
+          <rect class="glow" x="205" y="330" width="80" height="120" rx="14"/>
+          <rect x="215" y="360" width="60" height="80" rx="8" fill="#e5e5e5" stroke="#888" stroke-width="4"/>
+          <g stroke="#ff6b3d" stroke-width="5"><line x1="225" y1="375" x2="265" y2="375"/><line x1="225" y1="395" x2="265" y2="395"/><line x1="225" y1="415" x2="265" y2="415"/></g>
+          <path d="M262 340 q10 -20 0 -40" stroke="#ff9f6e" stroke-width="4" fill="none" opacity=".8"/>
+          <circle class="ring" cx="245" cy="395" r="62"/>
+        </g>
+        <!-- glass jar on the desk edge / TV not fixed (hazard 8) -->
+        <g>
+          <rect x="530" y="330" width="120" height="14" fill="#7a4a24"/>
+          <rect x="540" y="344" width="10" height="96" fill="#7a4a24"/><rect x="630" y="344" width="10" height="96" fill="#7a4a24"/>
+        </g>
+        <g class="hz" data-hz="tv">
+          <rect class="glow" x="520" y="235" width="140" height="100" rx="14"/>
+          <rect x="535" y="250" width="110" height="70" rx="6" fill="#2c3e50" stroke="#111" stroke-width="5"/>
+          <rect x="580" y="320" width="20" height="12" fill="#111"/>
+          <path d="M548 300 l20 -25 l15 15 l20 -20 l25 30 Z" fill="#5dade2" opacity=".7"/>
+          <circle class="ring" cx="590" cy="285" r="62"/>
+        </g>
+        <!-- safe decoys -->
+        <g class="safe"><circle cx="470" cy="520" r="34" fill="#ffd166"/><circle cx="460" cy="512" r="5" fill="#333"/><circle cx="480" cy="512" r="5" fill="#333"/><path d="M458 528 q12 10 24 0" stroke="#333" stroke-width="4" fill="none"/></g>
+        <g class="safe"><rect x="100" y="470" width="110" height="60" rx="10" fill="#7bd389"/><text x="155" y="508" text-anchor="middle" font-size="22" font-weight="800" fill="#1d5c36">HALI</text></g>
+      </svg>
+    </div>
+    <div id="hzResult" style="display:none"></div>
+  </section>
+
+  <!-- STORY -->
+  <section class="screen" id="s-story">
+    <div class="ghead">
+      <div class="title"><h2>🧭 Sen Olsan Ne Yapardın?</h2><div class="lead" style="margin:0" id="storySub">Bir senaryo seç. Her adımda doğru kararı ver.</div></div>
+      <div class="hud" id="storyHud" style="display:none"><div class="chip hearts" id="hearts">❤️❤️❤️</div></div>
+    </div>
+    <div id="storyPick" class="scen-pick">
+      <button class="scen" style="background:#c0392b" data-sc="deprem"><span class="e">🏠</span>Gece Evde Deprem</button>
+      <button class="scen" style="background:#8e44ad" data-sc="okul"><span class="e">🏫</span>Okulda Deprem</button>
+      <button class="scen" style="background:#2e86de" data-sc="sel"><span class="e">🌊</span>Sel Geliyor</button>
+      <button class="scen" style="background:#e67e22" data-sc="yangin"><span class="e">🔥</span>Binada Yangın</button>
+    </div>
+    <div id="storyPlay" class="story" style="display:none">
+      <div class="stage" id="stage">🏠</div>
+      <div class="panel">
+        <div class="stepdots" id="stepdots"></div>
+        <div class="q" id="storyQ"></div>
+        <div class="choices" id="storyChoices"></div>
+        <div class="explain" id="storyExplain"></div>
+        <div style="text-align:right;margin-top:10px"><button class="btn" id="storyNext" style="display:none">Devam ➜</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMORY -->
+  <section class="screen" id="s-memory">
+    <div class="ghead">
+      <div class="title"><h2>🃏 Hafıza Kartları</h2><div class="lead" style="margin:0">Turuncu kart = durum, mavi kart = doğru davranış. Eşleştir!</div></div>
+      <div class="hud"><div class="chip">🔁 <span id="memMoves">0</span> hamle</div><div class="chip">✅ <span id="memPairs">0</span>/8</div></div>
+    </div>
+    <div class="mgrid" id="mgrid"></div>
+  </section>
+
+  <!-- CERT -->
+  <section class="screen" id="s-cert">
+    <div id="certArea">
+      <div class="cert">
+        <img src="kizilay.png" alt="" style="height:60px">
+        <h1>Afet Kahramanı Sertifikası</h1>
+        <div style="font-size:22px">Bu belge,</div>
+        <div class="who" id="certName">Kahraman</div>
+        <div style="font-size:22px;max-width:600px;margin:0 auto">adlı öğrencinin afet çantası hazırlamayı, evdeki tehlikeleri fark etmeyi, afet anında doğru kararlar vermeyi öğrendiğini ve <b>Afete Hazır Kahramanlar</b> görevlerini tamamladığını gösterir.</div>
+        <div class="meds" style="margin:14px 0">🎒🔍🧭🃏</div>
+        <div style="font-size:20px" id="certStars"></div>
+        <div style="font-size:18px;color:#7a6a6c;margin-top:6px" id="certDate"></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn" onclick="window.print()">🖨️ Yazdır</button>
+      <button class="btn ghost" data-go="home">Ana Sayfa</button>
+    </div>
+  </section>
+</div>
+
+<div class="tip" id="tip"><div class="e" id="tipE">✅</div><div><b id="tipT"></b><p id="tipP"></p></div></div>
+<div class="modal" id="modal"><div class="mbox"><div class="big" id="mBig">🏅</div><h2 id="mTitle"></h2><div class="stars" id="mStars" style="font-size:40px"></div><p id="mText" style="font-size:20px"></p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn" id="mAgain">Tekrar Oyna</button><button class="btn ghost" id="mHome">Ana Sayfa</button></div></div></div>
+
+<script>
+/* ---------------- state ---------------- */
+const store = {
+  get(){ try{ return JSON.parse(localStorage.getItem("afetKahraman")||"{}") }catch(e){ return {} } },
+  set(v){ try{ localStorage.setItem("afetKahraman", JSON.stringify(v)) }catch(e){} }
+};
+let S = Object.assign({ name:"", stars:{} }, store.get());
+const save = () => store.set(S);
+const $ = (q, el=document) => el.querySelector(q);
+const $$ = (q, el=document) => [...el.querySelectorAll(q)];
+const shuffle = a => { a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } return a };
+const starStr = n => "★".repeat(n) + "☆".repeat(3-n);
+
+/* ---------------- sound (Web Audio, no files) ---------------- */
+let soundOn = true, AC = null;
+function beep(type){
+  if(!soundOn) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    const notes = { ok:[660,880], bad:[220,170], pick:[520], drop:[400,600], win:[523,659,784,1047], tick:[900], flip:[700] }[type] || [440];
+    notes.forEach((f,i)=>{
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.type = type==="bad" ? "sawtooth" : "triangle"; o.frequency.value = f;
+      const t = AC.currentTime + i*0.09;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(type==="tick"?0.05:0.18,t+0.01); g.gain.exponentialRampToValueAtTime(0.0001,t+(type==="win"?0.35:0.18));
+      o.connect(g).connect(AC.destination); o.start(t); o.stop(t+0.4);
+    });
+  }catch(e){}
+}
+$("#soundBtn").onclick = () => { soundOn = !soundOn; $("#soundBtn").textContent = soundOn ? "🔊" : "🔇" };
+
+/* ---------------- confetti ---------------- */
+const cv = $("#confetti"), cx = cv.getContext("2d"); let parts = [];
+function confetti(n=140){
+  cv.width = innerWidth; cv.height = innerHeight;
+  for(let i=0;i<n;i++) parts.push({x:innerWidth/2+(Math.random()-.5)*200,y:innerHeight/3,vx:(Math.random()-.5)*14,vy:Math.random()*-12-4,c:["#DA0815","#ffbf2e","#1f9d55","#2e86de","#fff"][i%5],r:Math.random()*6+4,a:Math.random()*6});
+  if(parts.length===n) requestAnimationFrame(tickC);
+}
+function tickC(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.a+=.2;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.fillRect(-p.r,-p.r/2,p.r*2,p.r);cx.restore()});
+  parts = parts.filter(p=>p.y<cv.height+20);
+  if(parts.length) requestAnimationFrame(tickC); else cx.clearRect(0,0,cv.width,cv.height);
+}
+
+/* ---------------- navigation ---------------- */
+let timers = [];
+const clearTimers = () => { timers.forEach(clearInterval); timers = [] };
+function go(name){
+  clearTimers(); hideTip();
+  $$(".screen").forEach(s=>s.classList.remove("on"));
+  $("#s-"+name).classList.add("on");
+  scrollTo({top:0,behavior:"smooth"});
+  if(name==="home") refreshHome();
+  if(name==="bag") startBag();
+  if(name==="hazard") startHazard();
+  if(name==="story") startStoryPick();
+  if(name==="memory") startMemory();
+  if(name==="cert") showCert();
+}
+document.addEventListener("click", e => { const t = e.target.closest("[data-go]"); if(t) go(t.dataset.go) });
+$("#homeBtn").onclick = () => go("home");
+
+const TALK = [
+  "Merhaba! Ben <b>Hilal</b>. Afetlerde ne yapacağını bilen biri, hem kendini hem çevresini korur. Hadi başlayalım!",
+  "Biliyor musun? Deprem anında <b>kapı kasası</b> güvenli bir yer değildir. Sağlam bir masanın yanına çök, kapan, tutun!",
+  "Sadece <b>15 cm</b> derinliğindeki akan su bile insanı ayağından düşürebilir. Akan suya asla girme!",
+  "Afet çantanı <b>kolay ulaşılabilir</b> bir yerde tut ve her 6 ayda bir kontrol et.",
+  "Ailenle bir <b>toplanma alanı</b> belirleyin. Telefon çekmezse herkes orada buluşur!"
+];
+function refreshHome(){
+  $("#nameIn").value = S.name || "";
+  let got = 0;
+  ["bag","hazard","story","memory"].forEach(k=>{
+    const st = S.stars[k]||0;
+    $(`[data-stars="${k}"]`).textContent = st ? starStr(st) : "";
+    $(`[data-badge="${k}"]`).textContent = st ? "🏅" : "";
+    $(`[data-medal="${k}"]`).classList.toggle("got", st>0);
+    if(st) got++;
+  });
+  $("#medalCount").textContent = got;
+  $("#certBtn").disabled = got < 4;
+  $("#certBtn").textContent = got < 4 ? `🏆 Sertifika için ${4-got} rozet daha` : "🏆 Sertifikamı Göster";
+  $("#mascotTalk").innerHTML = got === 4 ? `Harikasın${S.name?", <b>"+escapeHtml(S.name)+"</b>":""}! 4 rozetin hepsini topladın. Sertifikan hazır! 🎉` : TALK[Math.floor(Math.random()*TALK.length)];
+}
+const escapeHtml = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+$("#nameSave").onclick = () => { S.name = $("#nameIn").value.trim(); save(); beep("ok"); $("#mascotTalk").innerHTML = S.name ? `Tanıştığıma sevindim <b>${escapeHtml(S.name)}</b>! Hangi görevle başlamak istersin?` : TALK[0] };
+$("#certBtn").onclick = () => go("cert");
+
+/* waving mascot */
+let wv = 0; setInterval(()=>{ wv += .25; const w = $("#wave"); if(w) w.setAttribute("transform", `rotate(${Math.sin(wv)*18} 187 150)`) }, 60);
+
+/* ---------------- result modal ---------------- */
+let againFn = null;
+function finish(key, stars, title, text, big){
+  if(stars > (S.stars[key]||0)) { S.stars[key] = stars; save(); }
+  $("#mBig").textContent = big || (stars>=3 ? "🏆" : stars===2 ? "🥈" : stars===1 ? "🥉" : "💪");
+  $("#mTitle").textContent = title;
+  $("#mStars").textContent = starStr(stars);
+  $("#mText").innerHTML = text + (stars>0 ? "<br><b>🏅 Rozet kazandın!</b>" : "<br>Rozet için en az 1 yıldız gerekli. Bir daha dene!");
+  $("#modal").classList.add("on");
+  if(stars>0){ beep("win"); confetti(); } else beep("bad");
+  againFn = () => go(key);
+}
+$("#mAgain").onclick = () => { $("#modal").classList.remove("on"); againFn && againFn() };
+$("#mHome").onclick = () => { $("#modal").classList.remove("on"); go("home") };
+
+/* ---------------- tip toast ---------------- */
+let tipT = null;
+function showTip(e, t, p, good=true, ms=4200){
+  $("#tipE").textContent = e; $("#tipT").textContent = t; $("#tipP").innerHTML = p;
+  $("#tip").style.borderTopColor = good ? "var(--ok)" : "var(--bad)";
+  $("#tip").classList.add("on"); clearTimeout(tipT); tipT = setTimeout(hideTip, ms);
+}
+function hideTip(){ $("#tip").classList.remove("on") }
+$("#tip").onclick = hideTip;
+
+/* =================== GAME 1: BAG =================== */
+const ITEMS = [
+  {e:"💧",n:"Su",ok:1,w:"Ailenin en az 3 gün yetecek kadar suyu olmalı. Su en önemli ihtiyaçtır."},
+  {e:"🥫",n:"Konserve",ok:1,w:"Bozulmayan, pişirmeden yenebilen yiyecekler ilk günlerde çok işe yarar."},
+  {e:"🔦",n:"El feneri",ok:1,w:"Elektrik kesilir. Mum yerine el feneri kullan; mum yangın çıkarabilir."},
+  {e:"🔋",n:"Yedek pil",ok:1,w:"Fener ve radyo için yedek pil şart."},
+  {e:"📣",n:"Düdük",ok:1,w:"Enkaz altında bağırmak seni yorar ve toz yutarsın. Düdük sesi çok daha uzağa gider."},
+  {e:"🩹",n:"İlk yardım seti",ok:1,w:"Küçük yaralar için yara bandı, sargı bezi ve antiseptik bulunmalı."},
+  {e:"💊",n:"Kişisel ilaçlar",ok:1,w:"Düzenli kullanılan ilaçlar ve reçete fotokopisi mutlaka çantada olmalı."},
+  {e:"📻",n:"Pilli radyo",ok:1,w:"Telefon ve internet çalışmazsa resmî duyuruları radyodan dinlersin."},
+  {e:"📄",n:"Belge fotokopileri",ok:1,w:"Kimlik ve önemli belgelerin fotokopileri su geçirmez poşette saklanır."},
+  {e:"🧥",n:"Yedek kıyafet",ok:1,w:"Mevsime uygun yedek kıyafet ve kalın çorap soğuktan korur."},
+  {e:"😷",n:"Toz maskesi",ok:1,w:"Yıkılan binaların tozu ciğerlere zarar verir. Maske hayat kurtarır."},
+  {e:"🔌",n:"Powerbank",ok:1,w:"Dolu bir powerbank ile telefonunla haber verebilir, yardım çağırabilirsin."},
+  {e:"💨",n:"Saç kurutma makinesi",ok:0,w:"Elektrik yokken hiçbir işe yaramaz, üstelik ağır."},
+  {e:"🎮",n:"Oyun konsolu",ok:0,w:"Yer kaplar, pil yer. Çantada her santimetre değerli!"},
+  {e:"🕯️",n:"Mum",ok:0,w:"Gaz kaçağı olabilir, yangın çıkarabilir. El feneri çok daha güvenli."},
+  {e:"🍦",n:"Dondurma",ok:0,w:"Erir ve bozulur. Bozulmayan yiyecekler seçilmeli."},
+  {e:"🖼️",n:"Cam çerçeve",ok:0,w:"Kırılır, kesebilir. Fotoğrafları telefonda ya da fotokopi olarak sakla."},
+  {e:"🪴",n:"Saksı çiçeği",ok:0,w:"Çok güzel ama afet çantasının işi değil!"},
+  {e:"📺",n:"Tablet şarjı %3",ok:0,w:"Boş bir cihaz işe yaramaz. Dolu bir powerbank çok daha değerli."},
+  {e:"🧸",n:"Kocaman peluş",ok:0,w:"Küçük çocuklar için küçük bir oyuncak olabilir, ama kocaman peluş çok yer kaplar."},
+  {e:"🧴",n:"Cam şişe parfüm",ok:0,w:"Kırılır ve yanıcıdır. Yerine sabun, ıslak mendil gibi hijyen ürünleri koy."},
+];
+let bag = [], bagTime = 60, bagOver = false, drag = null;
+function startBag(){
+  bag = []; bagTime = 60; bagOver = false;
+  $("#bagPlay").style.display = ""; $("#bagResult").style.display = "none";
+  const sh = $("#bagShelf"); sh.innerHTML = "";
+  shuffle(ITEMS).forEach(it=>{
+    const d = document.createElement("div"); d.className = "item"; d.innerHTML = `<span class="e">${it.e}</span>${it.n}`; d._it = it;
+    d.addEventListener("pointerdown", ev => startDrag(ev, d));
+    sh.appendChild(d);
+  });
+  renderSlots(); $("#bagTime").textContent = bagTime; $("#bagTime").classList.remove("low");
+  timers.push(setInterval(()=>{ if(bagOver) return; bagTime--; $("#bagTime").textContent = bagTime; if(bagTime<=10){ $("#bagTime").classList.add("low"); beep("tick") } if(bagTime<=0) endBag() },1000));
+}
+function renderSlots(){
+  const g = $("#bagSlots"); g.innerHTML = "";
+  for(let i=0;i<12;i++){
+    const s = document.createElement("div"); s.className = "slot" + (bag[i]?" full":"");
+    s.textContent = bag[i] ? bag[i].e : ""; s.title = bag[i] ? bag[i].n+" (çıkarmak için dokun)" : "";
+    if(bag[i]) s.onclick = () => removeFromBag(i);
+    g.appendChild(s);
+  }
+  $("#bagCount").textContent = bag.length;
+}
+function addToBag(el){
+  if(bagOver) return;
+  if(bag.length >= 12){ beep("bad"); showTip("🎒","Çanta dolu!","Bir eşyayı çıkarmak için çantadaki eşyaya dokun.",false,2500); return; }
+  bag.push(el._it); el.classList.add("ghost"); el.style.pointerEvents = "none"; beep("drop"); renderSlots();
+  $("#bagDrop").animate([{transform:"scale(1)"},{transform:"scale(1.04)"},{transform:"scale(1)"}],{duration:250});
+}
+function removeFromBag(i){
+  const it = bag.splice(i,1)[0];
+  const el = $$("#bagShelf .item").find(x=>x._it===it); if(el){ el.classList.remove("ghost"); el.style.pointerEvents = "" }
+  beep("pick"); renderSlots();
+}
+function startDrag(ev, el){
+  if(bagOver) return;
+  ev.preventDefault();
+  const r = el.getBoundingClientRect(), sx = ev.clientX, sy = ev.clientY; let moved = false;
+  const clone = el.cloneNode(true); clone.classList.add("dragging"); clone.style.width = r.width+"px"; clone.style.left = r.left+"px"; clone.style.top = r.top+"px";
+  const move = e => {
+    if(!moved && Math.hypot(e.clientX-sx, e.clientY-sy) > 8){ moved = true; document.body.appendChild(clone); el.classList.add("ghost"); beep("pick") }
+    if(moved){ clone.style.left = (r.left + e.clientX - sx)+"px"; clone.style.top = (r.top + e.clientY - sy)+"px";
+      const b = $("#bagDrop").getBoundingClientRect(); $("#bagDrop").classList.toggle("hot", e.clientX>b.left&&e.clientX<b.right&&e.clientY>b.top&&e.clientY<b.bottom) }
+  };
+  const up = e => {
+    removeEventListener("pointermove", move); removeEventListener("pointerup", up);
+    $("#bagDrop").classList.remove("hot");
+    if(!moved){ addToBag(el); return }
+    clone.remove(); el.classList.remove("ghost");
+    const b = $("#bagDrop").getBoundingClientRect();
+    if(e.clientX>b.left&&e.clientX<b.right&&e.clientY>b.top&&e.clientY<b.bottom) addToBag(el);
+  };
+  addEventListener("pointermove", move); addEventListener("pointerup", up);
+}
+$("#bagDone").onclick = () => endBag();
+function endBag(){
+  if(bagOver) return; bagOver = true; clearTimers();
+  const good = bag.filter(i=>i.ok).length, bad = bag.filter(i=>!i.ok).length;
+  const missed = ITEMS.filter(i=>i.ok && !bag.includes(i));
+  const score = good - bad;
+  const stars = score>=11 ? 3 : score>=8 ? 2 : score>=5 ? 1 : 0;
+  $("#bagPlay").style.display = "none";
+  const R = $("#bagResult"); R.style.display = "";
+  R.innerHTML = `<div class="panel"><h2 style="margin-top:0">Çantanı kontrol edelim! ${starStr(stars)}</h2>
+    <div class="lead">✅ ${good} doğru eşya · ❌ ${bad} gereksiz eşya · ⚠️ ${missed.length} unutulan</div>
+    <div class="result-list">${bag.map(i=>`<div class="res ${i.ok?"ok":"bad"}"><span class="e">${i.e}</span><div><b>${i.ok?"✅":"❌"} ${i.n}</b><br>${i.w}</div></div>`).join("")}
+    ${missed.map(i=>`<div class="res miss"><span class="e">${i.e}</span><div><b>⚠️ Unuttun: ${i.n}</b><br>${i.w}</div></div>`).join("")}</div>
+    <div style="text-align:center;margin-top:14px;display:flex;gap:10px;justify-content:center"><button class="btn" data-go="bag">Tekrar Dene</button><button class="btn ghost" data-go="home">Ana Sayfa</button></div></div>`;
+  setTimeout(()=>finish("bag", stars, stars?"Çanta hazır!":"Çanta eksik kaldı", `Puanın: <b>${score}</b> (doğrular eksi gereksizler). Aşağıda her eşyanın açıklaması var.`), 600);
+}
+
+/* =================== GAME 2: HAZARD =================== */
+const HZ = {
+  bedwin:{e:"🛏️",t:"Yatak pencerenin dibinde",p:"Depremde camlar kırılıp üstüne düşebilir. Yatağını pencereden <b>uzağa</b> taşı."},
+  frame:{e:"🖼️",t:"Yatağın üstünde ağır tablo",p:"Sallantıda düşüp başına çarpabilir. Yatağın üstüne ağır eşya <b>asma</b>."},
+  shelf:{e:"📚",t:"Sabitlenmemiş kitaplık",p:"Kitaplık ve dolaplar devrilebilir. <b>L demir</b> veya kayışla duvara sabitle."},
+  topbox:{e:"📦",t:"Dolabın üstünde ağır kutu ve cam vazo",p:"Yüksekteki ağır ve kırılacak eşyalar düşer. Ağır eşyaları <b>alt raflara</b> koy."},
+  plug:{e:"⚡",t:"Aşırı yüklenmiş uzatma kablosu",p:"Çok fazla fiş yangın çıkarabilir. Depremden sonra elektrik yangınları sık görülür."},
+  exit:{e:"🚪",t:"Kapının önü kutularla dolu",p:"Kaçış yolu her zaman <b>açık</b> olmalı. Afette saniyeler önemli!"},
+  heater:{e:"🔥",t:"Isıtıcı perdenin yanında",p:"Isıtıcı devrilirse perde tutuşabilir. Isıtıcıları yanıcı eşyalardan <b>uzak</b> tut."},
+  tv:{e:"📺",t:"Sabitlenmemiş televizyon",p:"Televizyon sehpadan düşebilir. Duvara ya da sehpaya <b>sabitle</b>."},
+};
+let hzFound, hzTime, hzHints, hzMiss, hzOver;
+function startHazard(){
+  hzFound = new Set(); hzTime = 90; hzHints = 2; hzMiss = 0; hzOver = false;
+  $$("#hzSvg .hz").forEach(g=>g.classList.remove("found","hintpulse"));
+  $("#hzFound").textContent = 0; $("#hzTime").textContent = hzTime; $("#hzHints").textContent = hzHints; $("#hzTime").classList.remove("low");
+  $("#hzScene").style.display = ""; $("#hzResult").style.display = "none";
+  timers.push(setInterval(()=>{ if(hzOver) return; hzTime--; $("#hzTime").textContent = hzTime; if(hzTime<=10){ $("#hzTime").classList.add("low"); beep("tick") } if(hzTime<=0) endHazard() },1000));
+}
+$("#hzSvg").addEventListener("click", ev=>{
+  if(hzOver) return;
+  const g = ev.target.closest(".hz");
+  if(g){
+    const k = g.dataset.hz;
+    if(hzFound.has(k)) return;
+    hzFound.add(k); g.classList.add("found"); g.classList.remove("hintpulse");
+    $("#hzFound").textContent = hzFound.size; beep("ok");
+    const h = HZ[k]; showTip(h.e, h.t, h.p, true, 4500);
+    if(hzFound.size === 8) setTimeout(endHazard, 1200);
+  } else {
+    hzMiss++; beep("bad");
+    const r = $("#hzScene").getBoundingClientRect();
+    const m = document.createElement("div"); m.className = "miss-mark"; m.textContent = "🤔"; m.style.left = (ev.clientX-r.left)+"px"; m.style.top = (ev.clientY-r.top)+"px";
+    $("#hzScene").appendChild(m); setTimeout(()=>m.remove(), 800);
+  }
+});
+$("#hzHint").onclick = () => {
+  if(hzOver || hzHints<=0) return;
+  const left = $$("#hzSvg .hz").filter(g=>!hzFound.has(g.dataset.hz));
+  if(!left.length) return;
+  hzHints--; $("#hzHints").textContent = hzHints;
+  const g = left[Math.floor(Math.random()*left.length)]; g.classList.add("hintpulse"); setTimeout(()=>g.classList.remove("hintpulse"), 2500);
+};
+function endHazard(){
+  if(hzOver) return; hzOver = true; clearTimers();
+  const n = hzFound.size, used = 2 - hzHints;
+  let stars = n===8 ? 3 : n>=6 ? 2 : n>=4 ? 1 : 0;
+  if(stars===3 && used>=2) stars = 2;
+  const missed = Object.keys(HZ).filter(k=>!hzFound.has(k));
+  const R = $("#hzResult"); R.style.display = "";
+  R.innerHTML = `<div class="panel" style="margin-top:14px"><h2 style="margin-top:0">${n}/8 tehlike buldun ${starStr(stars)}</h2>
+    <div class="result-list">${Object.entries(HZ).map(([k,h])=>`<div class="res ${hzFound.has(k)?"ok":"miss"}"><span class="e">${h.e}</span><div><b>${hzFound.has(k)?"✅":"⚠️"} ${h.t}</b><br>${h.p}</div></div>`).join("")}</div>
+    <div style="text-align:center;margin-top:14px;display:flex;gap:10px;justify-content:center"><button class="btn" data-go="hazard">Tekrar Dene</button><button class="btn ghost" data-go="home">Ana Sayfa</button></div></div>`;
+  missed.forEach(k=>$(`#hzSvg .hz[data-hz="${k}"]`).classList.add("hintpulse"));
+  setTimeout(()=>finish("hazard", stars, n===8?"Süper dedektif!":"Bazı tehlikeler kaçtı", `${n} tehlike buldun, ${used} ipucu kullandın. Kaçırdıkların yanıp sönüyor. Bu akşam kendi odanı da kontrol et!`), 900);
+}
+
+/* =================== GAME 3: STORY =================== */
+const STORIES = {
+  deprem:{c:"#c0392b",steps:[
+    {s:"🛋️",shake:1,q:"Akşam salonda ödev yapıyorsun. Birden her şey sallanmaya başladı! Ne yaparsın?",o:[
+      ["Sağlam masanın yanına çöker, başımı kollarımla korur, masaya tutunurum.",1,"Doğru! <b>Çök – Kapan – Tutun.</b> Sarsıntı bitene kadar yerinde kal."],
+      ["Kapı kasasının altına koşarım.",0,"Kapı kasası güvenli değildir ve koşarken düşebilirsin. Olduğun yerde çök, kapan, tutun."],
+      ["Hemen balkona çıkarım.",0,"Balkonlar depremde en riskli yerlerden biridir. İçeride kal, çök-kapan-tutun."]]},
+    {s:"😮‍💨",q:"Sarsıntı bitti. Annen 'Hemen çıkalım' diyor. Önce ne yaparsın?",o:[
+      ["Ayakkabımı giyer, afet çantamızı alırım.",1,"Doğru! Yerde cam kırıkları olabilir. Afet çantası da hazırda bekliyor."],
+      ["Telefonla sallanan odanın videosunu çekerim.",0,"Önce güvenlik! Zaman kaybetmeden binadan çıkmaya hazırlanmalısın."],
+      ["Mum yakıp etrafa bakarım.",0,"Gaz kaçağı olabilir, mum ya da çakmak yakma! El feneri kullan."]]},
+    {s:"🛗",q:"6. kattasınız. Aşağı nasıl inersiniz?",o:[
+      ["Asansörle, çünkü daha hızlı.",0,"Asansör durabilir ve içinde mahsur kalırsın. Afette asla asansör kullanma!"],
+      ["Merdivenden, sakince, tırabzana tutunarak.",1,"Doğru! Koşmadan, itişmeden merdivenden in."],
+      ["Merdivenden koşarak, en önde olmak için.",0,"Koşarsan düşebilir, başkalarını da düşürebilirsin. Sakin ol."]]},
+    {s:"🌳",q:"Dışarıdasınız. Nerede beklersiniz?",o:[
+      ["Binanın hemen önünde, eve yakın olalım diye.",0,"Artçı depremlerde binadan parçalar düşebilir. Binalardan uzak dur."],
+      ["Önceden belirlediğimiz toplanma alanında.",1,"Doğru! Toplanma alanları açık ve güvenli alanlardır. e-Devlet'ten öğrenebilirsin."],
+      ["Elektrik direğinin altında.",0,"Direkler ve teller devrilebilir. Açık alana git."]]},
+    {s:"📱",q:"Babaannene haber vermek istiyorsun. Ne yaparsın?",o:[
+      ["Kısa bir mesaj atarım: 'İyiyiz, toplanma alanındayız.'",1,"Doğru! Hatları meşgul etmemek için kısa mesaj en iyisi. Hatlar acil çağrılar için gerekli."],
+      ["Uzun uzun ararım, tekrar tekrar.",0,"Hatlar kilitlenir ve acil çağrılar ulaşamaz. Kısa mesaj gönder."],
+      ["Sosyal medyada canlı yayın açarım.",0,"İnterneti ve şarjını boşa harcarsın. Kısa bir mesaj yeterli."]]},
+  ]},
+  okul:{c:"#8e44ad",steps:[
+    {s:"🏫",shake:1,q:"Matematik dersindesin, sınıf sallanmaya başladı! Ne yaparsın?",o:[
+      ["Sıramın yanına çöker, başımı korur, sıraya tutunurum.",1,"Doğru! Okulda da kural aynı: Çök – Kapan – Tutun."],
+      ["Kapıya koşarım, ilk ben çıkayım.",0,"Sallantı sırasında koşmak düşmene ve izdihama yol açar."],
+      ["Pencerenin yanına gidip dışarı bakarım.",0,"Camlar kırılabilir. Pencerelerden uzak dur."]]},
+    {s:"👩‍🏫",q:"Sarsıntı durdu. Öğretmenin 'Sırayla çıkıyoruz' dedi. Ne yaparsın?",o:[
+      ["Çantamı toplayıp kitaplarımı yerleştiririm.",0,"Eşya toplamakla vakit kaybetme. Öğretmenini dinle."],
+      ["Öğretmenimi dinler, tahliye planına göre sırayla çıkarım.",1,"Doğru! Okulların tahliye planı vardır. Tatbikatlarda öğrendiğin gibi davran."],
+      ["Arkadaşlarımı iterek koridora koşarım.",0,"İtişmek kazalara yol açar. Sakin ve sıralı çıkılmalı."]]},
+    {s:"🧱",q:"Koridorda bir arkadaşın düştü ve ayağı acıyor. Ne yaparsın?",o:[
+      ["Hemen bir öğretmene haber veririm.",1,"Doğru! Yetişkinlere haber vermek en hızlı yardım yoludur."],
+      ["Onu hızlıca sürükleyip kaldırmaya çalışırım.",0,"Yanlış hareket yarayı kötüleştirebilir. Bir yetişkine haber ver."],
+      ["Görmezden gelip devam ederim.",0,"Yardımlaşma afetlerde çok önemlidir. En azından bir yetişkine haber ver."]]},
+    {s:"🧑‍🤝‍🧑",q:"Okul bahçesindesiniz. Ne yaparsın?",o:[
+      ["Sınıfımla toplanma alanında kalır, yoklamaya katılırım.",1,"Doğru! Öğretmenin herkesin güvende olduğunu yoklamayla kontrol eder."],
+      ["Eve tek başıma yürürüm.",0,"Ailen seni okulda arar. Toplanma alanında kal, ailen gelsin."],
+      ["Unuttuğum telefonu almak için sınıfa dönerim.",0,"Artçı deprem olabilir! Hiçbir eşya için binaya geri girme."]]},
+    {s:"📣",q:"Hayal et: Enkaz altında kaldın ama yaralı değilsin. Ne yaparsın?",o:[
+      ["Sürekli bağırırım.",0,"Bağırmak seni yorar ve toz yutarsın. Sesini idareli kullan."],
+      ["Düdük çalar ya da borulara, duvara vururum.",1,"Doğru! Düdük ve vurma sesleri kurtarıcılara uzaktan ulaşır. Ağzını bir bezle kapat."],
+      ["Kibrit yakıp etrafa bakarım.",0,"Gaz kaçağı olabilir. Asla ateş yakma!"]]},
+  ]},
+  sel:{c:"#2e86de",steps:[
+    {s:"🌧️",q:"Günlerdir yağmur yağıyor. Radyoda sel uyarısı verildi. Ne yaparsın?",o:[
+      ["Dereye gidip suyun yükselişini izlerim.",0,"Dere yatakları selde en tehlikeli yerlerdir. Uzak dur!"],
+      ["Ailemle hazırlık yapar, resmî duyuruları takip ederiz.",1,"Doğru! Çantanı hazırla ve yetkililerin uyarılarını dinle."],
+      ["Bodrum kata inip saklanırım.",0,"Su önce bodrumları doldurur. Yüksek yerlere çık!"]]},
+    {s:"🏠",q:"Su eve girmeye başladı. İlk ne yapılmalı?",o:[
+      ["Elektriği sigortadan kapatıp üst kata çıkarız.",1,"Doğru! Su ve elektrik birlikte çok tehlikeli. Sonra yüksek bir yere çık."],
+      ["Suyun içinde prize takılı eşyaları toplarım.",0,"Elektrik çarpabilir! Suya girmeden önce elektrik kapatılmalı."],
+      ["Halıları kurtarmaya çalışırım.",0,"Eşyalar beklesin, önce can güvenliği!"]]},
+    {s:"🚶",q:"Tahliye ediliyorsunuz. Yolda dizine gelmeyen ama hızlı akan bir su var. Ne yaparsın?",o:[
+      ["Sığ görünüyor, içinden geçeriz.",0,"Sadece 15 cm akan su seni düşürebilir! Akan suya asla girme."],
+      ["Geri dönüp başka bir yol buluruz.",1,"Doğru! 'Dön, başka yol bul.' Akan su göründüğünden çok daha güçlüdür."],
+      ["Bisikletle hızlıca geçeriz.",0,"Akan su bisikleti de devirir. Başka yol bul."]]},
+    {s:"🚗",q:"Arabadasınız ve önünüzde sular altında kalmış bir yol var.",o:[
+      ["Hızla geçeriz, araba ağırdır.",0,"30 cm akan su bir arabayı bile sürükleyebilir!"],
+      ["Arabayı yüksek bir yerde durdurup başka güzergâh ararız.",1,"Doğru! Sular altındaki yollardan asla geçilmez."],
+      ["Camı açıp suyun derinliğine bakarız.",0,"Önemli olan derinlik değil; akan su her zaman tehlikelidir."]]},
+    {s:"🚰",q:"Sel çekildi. Çok susadın. Ne içersin?",o:[
+      ["Musluk suyunu hemen içerim.",0,"Sel suları şebekeyi kirletebilir. Yetkililer 'güvenli' diyene kadar içme."],
+      ["Afet çantamızdaki kapalı şişe suyu içerim.",1,"Doğru! Kapalı şişe su güvenlidir. Bu yüzden çantada su olmalı."],
+      ["Yerdeki birikmiş sudan içerim.",0,"Sel suyu mikrop ve kimyasallarla doludur. Asla içme ve oynama!"]]},
+  ]},
+  yangin:{c:"#e67e22",steps:[
+    {s:"🔔",q:"Apartmanda yangın alarmı çalıyor, koridorda duman var. Ne yaparsın?",o:[
+      ["Eğilerek, yere yakın ilerlerim ve ağzımı bir bezle kapatırım.",1,"Doğru! Duman yukarıda birikir; temiz hava yere yakındır."],
+      ["Dik dik koşarım.",0,"Duman yukarıda toplanır ve seni bayıltabilir. Eğil, yere yakın ilerle."],
+      ["Saklanmak için yatağın altına girerim.",0,"Saklanmak yerine çıkmalısın. İtfaiye seni bulamayabilir."]]},
+    {s:"🚪",q:"Kapalı bir kapıya geldin. Ne yaparsın?",o:[
+      ["Hemen açarım.",0,"Kapının arkasında ateş olabilir. Önce kontrol et!"],
+      ["Elimin tersiyle kapıya ve kola dokunurum. Sıcaksa açmam.",1,"Doğru! Sıcak kapının arkasında yangın vardır. Başka çıkış ara."],
+      ["Kapıyı tekmeleyip kırarım.",0,"Kapıyı kırmak ateşe oksijen verir. Önce sıcaklığını kontrol et."]]},
+    {s:"🛗",q:"Binadan nasıl çıkarsın?",o:[
+      ["Merdivenden.",1,"Doğru! Yangında asansörler durabilir ve bacaya dönüşebilir."],
+      ["Asansörden.",0,"Asansör yangında tuzağa dönüşebilir. Merdiveni kullan."],
+      ["Çatıya çıkarım.",0,"Duman ve ateş yukarı doğru gider. Aşağı, çıkışa doğru ilerle."]]},
+    {s:"🧥",q:"Kaçarken kazağının ucu tutuştu! Ne yaparsın?",o:[
+      ["Koşarak söndürmeye çalışırım.",0,"Koşmak ateşi büyütür!"],
+      ["DUR – YAT – YUVARLAN!",1,"Doğru! Dur, yere yat, yüzünü elinle kapat ve alevler sönene kadar yuvarlan."],
+      ["Elimle vururum.",0,"Ellerin yanabilir. Dur, yat ve yuvarlan."]]},
+    {s:"☎️",q:"Dışarıdasın. Kimi ararsın?",o:[
+      ["112'yi ararım ve adresi net söylerim.",1,"Doğru! Tüm acil durumlar için 112. Sakin ol, adresi ve ne olduğunu söyle."],
+      ["Arkadaşlarımı arayıp anlatırım.",0,"Önce itfaiyeye haber verilmeli: 112!"],
+      ["Kimseyi aramam, nasılsa birisi aramıştır.",0,"Herkes böyle düşünürse kimse aramaz! Hemen 112."]]},
+  ]},
+};
+let st = null;
+function startStoryPick(){
+  $("#storyPick").style.display = ""; $("#storyPlay").style.display = "none"; $("#storyHud").style.display = "none";
+  $("#storySub").textContent = "Bir senaryo seç. Her adımda doğru kararı ver. 3 canın var!";
+}
+$("#storyPick").addEventListener("click", e=>{ const b = e.target.closest("[data-sc]"); if(b) playStory(b.dataset.sc) });
+function playStory(key){
+  st = { key, i:0, hearts:3, firstTry:0 };
+  $("#storyPick").style.display = "none"; $("#storyPlay").style.display = ""; $("#storyHud").style.display = "";
+  $("#stage").style.background = STORIES[key].c;
+  renderStep();
+}
+function renderStep(){
+  const sc = STORIES[st.key], step = sc.steps[st.i];
+  $("#stepdots").innerHTML = sc.steps.map((_,j)=>`<i class="${j<=st.i?"on":""}"></i>`).join("");
+  $("#stage").textContent = step.s; $("#stage").classList.toggle("shake", !!step.shake);
+  $("#storyQ").textContent = step.q;
+  $("#hearts").textContent = "❤️".repeat(st.hearts) + "🤍".repeat(3-st.hearts);
+  const ex = $("#storyExplain"); ex.className = "explain"; ex.innerHTML = "";
+  $("#storyNext").style.display = "none";
+  const ch = $("#storyChoices"); ch.innerHTML = ""; st.tried = false;
+  shuffle(step.o).forEach(o=>{
+    const b = document.createElement("button"); b.className = "choice"; b.textContent = o[0];
+    b.onclick = () => {
+      if(b.disabled) return;
+      if(o[1]){
+        if(!st.tried) st.firstTry++;
+        b.classList.add("ok"); $$(".choice",ch).forEach(x=>x.disabled=true); beep("ok");
+        ex.className = "explain ok on"; ex.innerHTML = "✅ "+o[2];
+        $("#stage").classList.remove("shake");
+        $("#storyNext").style.display = ""; $("#storyNext").textContent = st.i === sc.steps.length-1 ? "Bitir 🏁" : "Devam ➜";
+      } else {
+        st.tried = true; b.classList.add("bad"); b.disabled = true; beep("bad");
+        st.hearts--; $("#hearts").textContent = "❤️".repeat(Math.max(0,st.hearts)) + "🤍".repeat(3-Math.max(0,st.hearts));
+        ex.className = "explain bad on"; ex.innerHTML = "❌ "+o[2];
+        if(st.hearts<=0){ $$(".choice",ch).forEach(x=>x.disabled=true); setTimeout(()=>finish("story",0,"Canların bitti","Açıklamaları oku ve tekrar dene. Afette doğru kararlar hayat kurtarır!","💔"),900) }
+      }
+    };
+    ch.appendChild(b);
+  });
+}
+$("#storyNext").onclick = () => {
+  const sc = STORIES[st.key];
+  if(st.i < sc.steps.length-1){ st.i++; renderStep(); return }
+  const stars = st.hearts===3 ? 3 : st.hearts===2 ? 2 : 1;
+  finish("story", stars, "Senaryo tamamlandı!", `${sc.steps.length} adımın ${st.firstTry} tanesinde ilk denemede doğru karar verdin. Diğer senaryoları da dene!`);
+};
+
+/* =================== GAME 4: MEMORY =================== */
+const PAIRS = [
+  ["🌍","Deprem anı","🙇","Çök – Kapan – Tutun"],
+  ["🌊","Sel uyarısı","⛰️","Yüksek yere çık"],
+  ["🔥","Dumanlı koridor","🐢","Eğil, yere yakın ilerle"],
+  ["🧱","Enkaz altında","📣","Düdük çal, vur"],
+  ["🧥","Kıyafet tutuştu","🔄","Dur – Yat – Yuvarlan"],
+  ["💨","Gaz kokusu","🚫","Ateş yakma, vanayı kapat"],
+  ["🆘","Acil durum","☎️","112'yi ara"],
+  ["👨‍👩‍👧","Aile buluşması","📍","Toplanma alanı"],
+];
+let mFlip = [], mMoves = 0, mDone = 0, mLock = false;
+function startMemory(){
+  mFlip = []; mMoves = 0; mDone = 0; mLock = false;
+  $("#memMoves").textContent = 0; $("#memPairs").textContent = 0;
+  const cards = shuffle(PAIRS.flatMap((p,i)=>[{id:i,side:"a",e:p[0],t:p[1]},{id:i,side:"b",e:p[2],t:p[3]}]));
+  const g = $("#mgrid"); g.innerHTML = "";
+  cards.forEach(c=>{
+    const b = document.createElement("button"); b.className = "mcard"; b._c = c;
+    b.innerHTML = `<div class="in"><div class="face back">?</div><div class="face front ${c.side}"><span class="e">${c.e}</span>${c.t}</div></div>`;
+    b.onclick = () => flip(b);
+    g.appendChild(b);
+  });
+}
+function flip(b){
+  if(mLock || b.classList.contains("flip") || b.classList.contains("done")) return;
+  b.classList.add("flip"); beep("flip"); mFlip.push(b);
+  if(mFlip.length===2){
+    mMoves++; $("#memMoves").textContent = mMoves;
+    const [x,y] = mFlip;
+    if(x._c.id===y._c.id && x._c.side!==y._c.side){
+      setTimeout(()=>{ x.classList.add("done"); y.classList.add("done"); beep("ok"); mDone++; $("#memPairs").textContent = mDone;
+        const p = PAIRS[x._c.id]; showTip(p[2], `${p[1]} → ${p[3]}`, "Eşleşme doğru! Bu kuralı unutma.", true, 2600);
+        if(mDone===8){ const stars = mMoves<=14 ? 3 : mMoves<=20 ? 2 : 1; setTimeout(()=>finish("memory", stars, "Hepsini eşleştirdin!", `${mMoves} hamlede bitirdin. 3 yıldız için 14 hamle ya da daha azı gerekiyor.`), 900) }
+      }, 350);
+      mFlip = [];
+    } else {
+      mLock = true;
+      setTimeout(()=>{ x.classList.remove("flip"); y.classList.remove("flip"); mFlip = []; mLock = false }, 900);
+    }
+  }
+}
+
+/* =================== CERT =================== */
+function showCert(){
+  $("#certName").textContent = S.name || "Afet Kahramanı";
+  const total = ["bag","hazard","story","memory"].reduce((a,k)=>a+(S.stars[k]||0),0);
+  $("#certStars").textContent = `Toplam ${total}/12 yıldız ⭐`;
+  $("#certDate").textContent = new Date().toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"});
+  confetti(200); beep("win");
+}
+
+refreshHome();
+</script>
+</body>
+</html>

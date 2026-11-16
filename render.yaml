@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: afet-kahramanlari
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: HOSTED
+        value: "1"

@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Takım Düellosu · Tablet</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{--red:#DA0815;--red-d:#a8000c;--cream:#fff7ef;--ink:#2a1d1f;--muted:#7a6a6c;--ok:#1f9d55;--bad:#d64545;--gold:#ffbf2e;--team:#DA0815}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{margin:0;min-height:100%}
+body{font-family:"Baloo 2","Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--cream)}
+button{font-family:inherit;cursor:pointer}
+.bar{position:sticky;top:0;z-index:5;background:var(--team);color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px;box-shadow:0 4px 0 rgba(0,0,0,.12)}
+.bar .nm{flex:1;font-size:26px;font-weight:800;line-height:1}
+.bar .sc{font-size:30px;font-weight:800;background:rgba(255,255,255,.2);padding:2px 14px;border-radius:14px;font-variant-numeric:tabular-nums}
+.bar .clk{font-size:26px;font-weight:800;min-width:56px;text-align:center}
+.bar .clk.low{animation:blink .6s infinite}
+@keyframes blink{50%{opacity:.35}}
+.wrap{padding:16px;max-width:1100px;margin:0 auto}
+.center{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px}
+.big{font-size:90px;line-height:1}
+h1{color:var(--red);font-size:42px;margin:0;line-height:1}
+h2{font-size:32px;margin:0;line-height:1.1}
+p{font-size:21px;margin:0;color:var(--muted)}
+input{font:inherit;font-size:28px;padding:12px 18px;border-radius:18px;border:4px solid #f1d6d8;outline:none;width:min(520px,90vw);text-align:center}
+input:focus{border-color:var(--red)}
+.btn{border:0;border-radius:20px;padding:14px 30px;font-size:26px;font-weight:800;background:var(--team);color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.25)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+/* scenario */
+.q{font-size:24px;font-weight:800;line-height:1.2;margin:4px 0 14px}
+.choices{display:grid;gap:14px}
+.ch{position:relative;border:4px solid #f1d6d8;background:#fff;border-radius:22px;padding:18px 18px 18px 78px;font-size:23px;text-align:left;font-weight:800;line-height:1.15;min-height:92px}
+.ch .L{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:var(--team);color:#fff;display:grid;place-items:center;font-size:26px}
+.ch.sel{border-color:var(--team);background:#fff5d6}
+.ch.ok{border-color:var(--ok);background:#e4f7ec}
+.ch.bad{border-color:var(--bad);background:#fde8e8}
+.ch:disabled{color:inherit}
+.note{margin-top:14px;font-size:22px;font-weight:800;text-align:center}
+/* hazard */
+.room{border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 6px 0 rgba(0,0,0,.1);position:relative}
+.room svg{display:block;width:100%;height:auto}
+.room .ring{fill:none;stroke:none}
+.room .hz.found .ring{stroke-width:9;stroke-dasharray:7 5}
+.room .glow{opacity:0}
+.room .hz.found .glow{opacity:.25}
+.freeze{position:absolute;inset:0;background:rgba(214,69,69,.55);color:#fff;display:none;place-items:center;font-size:40px;font-weight:800;text-align:center}
+.freeze.on{display:grid}
+.mark{position:absolute;pointer-events:none;font-size:40px;transform:translate(-50%,-50%);animation:up .8s forwards}
+@keyframes up{to{opacity:0;transform:translate(-50%,-140%)}}
+/* bag */
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+.it{border:4px solid #f3dfd5;background:#fff7f2;border-radius:18px;padding:8px 4px;text-align:center;font-size:17px;font-weight:800;line-height:1.1}
+.it .e{font-size:42px;display:block;line-height:1.15}
+.it.in{border-color:var(--team);background:var(--team);color:#fff;transform:scale(.96)}
+.count{font-size:24px;font-weight:800;text-align:center;margin:8px 0 12px}
+/* memory */
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:640px;margin:0 auto}
+.mc{aspect-ratio:1;border-radius:16px;border:0;font-weight:800;font-size:15px;line-height:1.05;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;text-align:center}
+.mc.back{background:repeating-linear-gradient(45deg,var(--red) 0 12px,#e8232f 12px 24px);color:#fff;font-size:30px}
+.mc.back.wait{filter:grayscale(.7);opacity:.7}
+.mc.face{background:#fff}.mc.face.a{background:#fff3e0}.mc.face.b{background:#e9f4ff}
+.mc .e{font-size:34px}
+.turn{font-size:28px;font-weight:800;text-align:center;margin:6px 0 12px;padding:8px;border-radius:16px}
+.off{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#2a1d1f;color:#fff;padding:8px 18px;border-radius:14px;font-size:18px;display:none;z-index:9}
+.off.on{display:block}
+</style>
+</head>
+<body>
+<div class="bar" id="bar" style="display:none"><div class="nm" id="tName"></div><div class="clk" id="clk"></div><div class="sc" id="tScore">0</div></div>
+<div class="wrap" id="app"></div>
+<div class="off" id="off">Bağlantı bekleniyor…</div>
+<script src="content.js"></script>
+<script>
+const C = window.CONTENT;
+const $ = (q, el = document) => el.querySelector(q);
+const $$ = (q, el = document) => [...el.querySelectorAll(q)];
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const store = { get: (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+let ROOM = (new URLSearchParams(location.search).get("r") || store.get("duelRoom") || "").replace(/[^0-9A-Za-z]/g, "").slice(0, 8);
+let ME = ROOM ? store.get("duelTeam_" + ROOM) : null, S = null, offset = 0, es = null, view = "", lastHz = 0;
+const api = (body) => fetch("/api", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ room: ROOM }, body)) }).then((r) => r.json()).catch(() => ({}));
+const serverNow = () => Date.now() + offset;
+const me = () => S && S.teams.find((t) => t.id === ME);
+
+function vibrate(ms) { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} }
+
+function connect() {
+  if (es) es.close();
+  if (!ROOM) { joinView(""); return; }
+  es = new EventSource("/events?role=tablet&room=" + ROOM + (ME ? "&team=" + ME : ""));
+  es.onopen = () => $("#off").classList.remove("on");
+  es.onmessage = (m) => { const d = JSON.parse(m.data); offset = d.now - Date.now(); S = d.S; render(); };
+  es.onerror = () => { $("#off").classList.add("on"); es.close(); setTimeout(connect, 1500); };
+}
+connect();
+
+function joinView(msg) {
+  view = "join";
+  $("#bar").style.display = "none";
+  $("#app").innerHTML = `<div class="center"><div class="big">🛡️</div><h1>Afete Hazır Kahramanlar</h1><h2>Takım Düellosu</h2>
+    ${ROOM ? `<p>Sınıf kodu: <b>${esc(ROOM)}</b></p>` : `<p>Tahtadaki <b>sınıf kodunu</b> yazın:</p><input id="rc" maxlength="8" inputmode="numeric" placeholder="ör. 4827" autocomplete="off">`}
+    <p>Takımınızın adını yazın:</p><input id="nm" maxlength="24" placeholder="ör. Deprem Avcıları" autocomplete="off">
+    <button class="btn" id="go" style="background:#DA0815">Katıl ➜</button>${msg ? `<p style="color:#d64545;font-weight:800">${msg}</p>` : ""}</div>`;
+  $("#go").onclick = async () => {
+    if (!ROOM) { const rc = $("#rc").value.replace(/[^0-9A-Za-z]/g, ""); if (!rc) { $("#rc").focus(); return; } ROOM = rc; store.set("duelRoom", ROOM); }
+    const name = $("#nm").value.trim();
+    if (!name) { $("#nm").focus(); return; }
+    const r = await api({ action: "join", name });
+    if (r.error === "full") { joinView("İki takım zaten katıldı. Öğretmeninize haber verin."); return; }
+    ME = r.team; store.set("duelTeam_" + ROOM, ME); store.set("duelRoom", ROOM); connect();
+  };
+  $("#nm").addEventListener("keydown", (e) => { if (e.key === "Enter") $("#go").click(); });
+}
+
+setInterval(() => {
+  if (!S || !me()) return;
+  let dl = 0;
+  if (S.phase === "scenario" && S.sc && S.sc.stage === "question") dl = S.sc.deadline;
+  if (S.phase === "hazard" && S.hz && !S.hz.over) dl = S.hz.deadline;
+  if (S.phase === "bag" && S.bag && !S.bag.over) dl = S.bag.deadline;
+  const el = $("#clk");
+  if (!dl) { el.textContent = ""; return; }
+  const s = Math.max(0, Math.ceil((dl - serverNow()) / 1000));
+  el.textContent = "⏱" + s; el.classList.toggle("low", s <= 10);
+  if (S.phase === "hazard" && S.hz) $("#frz") && $("#frz").classList.toggle("on", (S.hz.freeze[ME] || 0) > serverNow());
+}, 250);
+
+function render() {
+  const t = me();
+  if (!t) { if (view !== "join") joinView(ME && S.teams.length >= 2 ? "Takımınız oyundan çıkarıldı." : ""); return; }
+  document.documentElement.style.setProperty("--team", t.color);
+  $("#bar").style.display = ""; $("#tName").textContent = t.name; $("#tScore").textContent = t.score;
+  const ph = S.phase;
+  if (ph === "lobby") return show("lobby", () => `<div class="center"><div class="big">✅</div><h1 style="color:var(--team)">${esc(t.name)}</h1><h2>Hazırsınız!</h2><p>Öğretmeniniz turu başlatınca soru buraya gelecek.<br>Takımınızla birlikte karar verin, kaptan dokunsun. 👆</p>
+    <p style="margin-top:20px"><button class="btn" style="font-size:18px;padding:8px 16px;background:#999" onclick="renameTeam()">✏️ Adı değiştir</button></p></div>`);
+  if (ph === "scenario") return renderScenario();
+  if (ph === "hazard") return renderHazard();
+  if (ph === "bag") return renderBag();
+  if (ph === "memory") return renderMemory();
+  if (ph === "final") {
+    const ts = S.teams.slice().sort((a, b) => b.score - a.score);
+    const win = ts[0].id === ME && !(ts[1] && ts[1].score === ts[0].score);
+    const tie = ts[1] && ts[1].score === ts[0].score;
+    return show("final" + t.score, () => `<div class="center"><div class="big">${tie ? "🤝" : win ? "🏆" : "🥈"}</div><h1 style="color:var(--team)">${tie ? "Berabere!" : win ? "KAZANDINIZ!" : "Harika mücadele!"}</h1><h2>${t.score} puan</h2><p>Artık afete daha hazırsınız. Öğrendiklerinizi ailenizle de paylaşın! 💪</p></div>`);
+  }
+}
+window.renameTeam = async () => { const n = prompt("Yeni takım adı:", me().name); if (n && n.trim()) await api({ action: "join", team: ME, name: n.trim() }); };
+function show(key, html) { if (view === key) return; view = key; $("#app").innerHTML = html(); }
+
+/* scenario */
+function renderScenario() {
+  const sc = S.sc;
+  if (sc.stage === "intro" || sc.stage === "done") return show("sc-" + sc.stage, () => `<div class="center"><div class="big">🧭</div><h2>${sc.stage === "intro" ? "Senaryo turu başlıyor!" : "Senaryo turu bitti!"}</h2><p>${sc.stage === "intro" ? "Soruyu tahtadan okuyun, takımca tartışın." : "Tahtaya bakın 👀"}</p></div>`);
+  const q = sc.list[sc.i], step = C.STORIES[q.k].steps[q.i];
+  const mine = sc.answers[ME];
+  const key = `sc-${sc.i}-${sc.stage}-${mine ? mine.choice : "x"}`;
+  show(key, () => {
+    const btns = sc.order.map((oi, n) => {
+      let cls = "";
+      if (sc.stage === "reveal") cls = step.o[oi][1] ? "ok" : (mine && mine.choice === oi ? "bad" : "");
+      else if (mine && mine.choice === oi) cls = "sel";
+      return `<button class="ch ${cls}" data-c="${oi}" ${mine || sc.stage !== "question" ? "disabled" : ""}><span class="L">${"ABC"[n]}</span>${esc(step.o[oi][0])}</button>`;
+    }).join("");
+    let note = "";
+    if (sc.stage === "question" && mine) note = "✅ Cevabınız gönderildi! Tahtaya bakın.";
+    if (sc.stage === "reveal") note = sc.gained[ME] ? `🎉 Doğru! +${sc.gained[ME]} puan` : (mine ? "❌ Bu sefer olmadı." : "⏰ Süre doldu.");
+    return `<div class="q">${sc.i + 1}. ${esc(step.q)}</div><div class="choices">${btns}</div><div class="note">${note}</div>`;
+  });
+  $$(".ch").forEach((b) => b.onclick = () => { vibrate(30); api({ action: "answer", team: ME, choice: Number(b.dataset.c) }); $$(".ch").forEach((x) => x.disabled = true); b.classList.add("sel"); });
+  if (sc.stage === "reveal" && view.endsWith("x") === false) {}
+}
+
+/* hazard */
+function renderHazard() {
+  const hz = S.hz;
+  const key = "hz-" + hz.deadline;
+  if (view !== key) {
+    view = key;
+    $("#app").innerHTML = `<p style="text-align:center;font-weight:800;color:var(--ink);font-size:22px;margin-bottom:8px">Depremde tehlikeli olan şeylere dokunun! Yanlış dokunuş = 2 sn ceza ⛔</p><div class="room" id="room">${C.ROOM_SVG}<div class="freeze" id="frz">⛔ Ceza! 2 saniye bekle</div></div><div class="note" id="hzNote"></div>`;
+    $("#room svg").addEventListener("click", (ev) => {
+      if (S.hz.over || (S.hz.freeze[ME] || 0) > serverNow()) return;
+      const g = ev.target.closest(".hz");
+      const r = $("#room").getBoundingClientRect();
+      const mk = document.createElement("div"); mk.className = "mark";
+      mk.style.left = ev.clientX - r.left + "px"; mk.style.top = ev.clientY - r.top + "px";
+      if (g && !S.hz.found[g.dataset.hz]) { mk.textContent = "⭐"; vibrate(40); api({ action: "hazard", team: ME, key: g.dataset.hz }); }
+      else if (g) { mk.textContent = "👀"; }
+      else { mk.textContent = "❌"; vibrate([60, 40, 60]); api({ action: "hazard", team: ME, key: "__miss" }); }
+      $("#room").appendChild(mk); setTimeout(() => mk.remove(), 800);
+    });
+  }
+  $$("#room .hz").forEach((g) => {
+    const owner = hz.found[g.dataset.hz]; g.classList.toggle("found", !!owner);
+    if (owner) { const col = S.teams.find((t) => t.id === owner)?.color || "#999"; $(".ring", g).style.stroke = col; $(".glow", g).style.fill = col; }
+  });
+  const mineN = Object.values(hz.found).filter((x) => x === ME).length;
+  $("#hzNote").textContent = hz.over ? `Tur bitti! Takımınız ${mineN} tehlike buldu. Tahtaya bakın 👀` : `Takımınız: ${mineN} · Toplam bulunan: ${Object.keys(hz.found).length}/8`;
+}
+
+/* bag */
+function renderBag() {
+  const b = S.bag;
+  const list = b.bags[ME] || [];
+  const key = "bag-" + b.deadline + "-" + b.over;
+  if (view !== key) {
+    view = key;
+    if (b.over) {
+      const r = b.result && b.result[ME];
+      $("#app").innerHTML = `<div class="center"><div class="big">🎒</div><h2>Süre doldu!</h2><p>${r ? `✅ ${r.good} doğru · ❌ ${r.bad} gereksiz · <b>${r.pts >= 0 ? "+" : ""}${r.pts} puan</b>` : ""}</p><p>Çantaları tahtada birlikte kontrol edin 👀</p></div>`;
+      return;
+    }
+    $("#app").innerHTML = `<div class="count" id="bc"></div><div class="items" id="items">${b.order.map((i) => `<button class="it" data-i="${i}"><span class="e">${C.ITEMS[i].e}</span>${esc(C.ITEMS[i].n)}</button>`).join("")}</div>`;
+    $$("#items .it").forEach((x) => x.onclick = () => {
+      const i = Number(x.dataset.i), inBag = (S.bag.bags[ME] || []).includes(i);
+      if (!inBag && (S.bag.bags[ME] || []).length >= 12) { vibrate([60, 40, 60]); $("#bc").textContent = "🎒 Çanta dolu! Önce bir eşya çıkarın."; return; }
+      vibrate(25); x.classList.toggle("in", !inBag); api({ action: "bag", team: ME, item: i });
+    });
+  }
+  if (b.over) return;
+  $$("#items .it").forEach((x) => x.classList.toggle("in", list.includes(Number(x.dataset.i))));
+  $("#bc").textContent = `🎒 Çantanız: ${list.length}/12 · Dokun: ekle / tekrar dokun: çıkar`;
+}
+
+/* memory */
+function renderMemory() {
+  const m = S.mem;
+  const myTurn = m.turn === ME && !m.over;
+  const turnTeam = S.teams.find((t) => t.id === m.turn);
+  const html = `<div class="turn" style="background:${myTurn ? "var(--team)" : "#eee"};color:${myTurn ? "#fff" : "var(--muted)"}">${m.over ? "Tur bitti! Tahtaya bakın 👀" : myTurn ? "👉 SIRA SİZDE! İki kart seçin." : `⏳ Sıra: ${esc(turnTeam ? turnTeam.name : "")}`}</div>
+    <div class="mg">${m.cards.map((c, i) => {
+      const owner = m.matched[i];
+      if (owner === undefined && !m.open.includes(i)) return `<button class="mc back ${myTurn ? "" : "wait"}" data-p="${i}">${i + 1}</button>`;
+      const p = C.PAIRS[c.id];
+      const col = owner !== undefined ? (S.teams.find((t) => t.id === owner)?.color || "#999") : "transparent";
+      return `<div class="mc face ${c.side}" style="outline:4px solid ${col}"><span class="e">${c.side === "a" ? p[0] : p[2]}</span>${esc(c.side === "a" ? p[1] : p[3])}</div>`;
+    }).join("")}</div>`;
+  view = "mem"; $("#app").innerHTML = html;
+  $$(".mc.back").forEach((b) => b.onclick = () => { if (!myTurn || m.lock) return; vibrate(25); api({ action: "mem", team: ME, pos: Number(b.dataset.p) }); });
+}
+</script>
+</body>
+</html>
